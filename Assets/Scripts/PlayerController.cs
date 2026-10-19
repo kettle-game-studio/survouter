@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour
 
     public void GetHit(Transform hitter, float damage)
     {
-        Debug.Log("Hit player!!!");
+        // Debug.Log("Hit player!!!");
     }
 }
 

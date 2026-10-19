@@ -31,7 +31,9 @@ public class Bullet : MonoBehaviour
             player.GetHit(transform, damage);
         if (collision.collider.TryGetComponent(out Enemy enemy))
             enemy.GetHit(transform, damage);
-        if (collision.collider.TryGetComponent(out Dragon dragon))
+        if (collision.body?.TryGetComponent(out Dragon dragon) ?? false)
+        {
             dragon.getShot = true;
+        }
     }
 }
