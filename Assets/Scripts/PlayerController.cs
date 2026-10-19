@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public AudioSource walkSource;
     public AudioSource jumpSource;
     public SwordController sword;
+    public RawImage blackScreen;
 
     InputAction lookAction;
     InputAction moveAction;
@@ -36,9 +39,14 @@ public class PlayerController : MonoBehaviour
     float JumpVelocity => Mathf.Sqrt(2 * Physics.gravity.magnitude * jumpHeight);
     InputActionMap playerInputMap;
     private float _shakeTime = 0f;
+    public RawImage healthBar;
+    public float health;
+    public float maxHeath = 100;
+    private float _blackTime = 1f;
 
     void Start()
     {
+        health = maxHeath;
         Cursor.lockState = CursorLockMode.Locked;
 
         rigidBody = GetComponent<Rigidbody>();
@@ -57,6 +65,15 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        healthBar.rectTransform.sizeDelta = new Vector2(300 * health / maxHeath, 15);
+        if (health <= 0)
+        {
+            blackScreen.color = new Color(blackScreen.color.r, blackScreen.color.g, blackScreen.color.b, 1 - _blackTime / 1);
+            _blackTime -= Time.deltaTime;
+            if (_blackTime <= 0)
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            return;
+        }
         _shakeTime = Mathf.Max(_shakeTime - Time.deltaTime, 0);
         if (_shakeTime > 0)
         {
@@ -176,7 +193,8 @@ public class PlayerController : MonoBehaviour
 
     public void GetHit(Transform hitter, float damage)
     {
-        // Debug.Log("Hit player!!!");
+        CameraShake(0.2f);
+        health = Mathf.Max(health - damage, 0);
     }
 }
 
