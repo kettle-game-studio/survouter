@@ -12,7 +12,6 @@ public class Dragon : MonoBehaviour
     public Bullet fireBullet;
     public Transform bulletSpawnPoint;
 
-    public bool startFlexing;
     public bool getShot;
 
     async void Start()
@@ -23,7 +22,7 @@ public class Dragon : MonoBehaviour
 
     void Update()
     {
-        animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
+        animator.SetFloat("WalkSpeed", navMeshAgent.velocity.magnitude);
     }
 
     async Awaitable DragonCoroutine()
@@ -38,7 +37,8 @@ public class Dragon : MonoBehaviour
 
     async Awaitable StartFlexing()
     {
-        while (!startFlexing) await Awaitable.NextFrameAsync();
+        while (!getShot) await Awaitable.NextFrameAsync();
+        getShot = false;
 
         animator.SetBool("Unpack", true);
         _player.CameraShake(1f);
@@ -57,7 +57,6 @@ public class Dragon : MonoBehaviour
                 return;
             }
 
-            Debug.Log("NotShot");
             if (Random.Range(0, 10) > 6)
             {
                 animator.SetBool("Fire", true);
@@ -67,12 +66,11 @@ public class Dragon : MonoBehaviour
                 spawnedBullet.transform.rotation = bulletSpawnPoint.rotation;
                 await Awaitable.WaitForSecondsAsync(1.0f);
             }
-
-            // else if (Random.Range(0, 10) > 7)
-            // {
-            //     await Fall(true);
-            //     return;
-            // }
+            else if (Random.Range(0, 10) > 7)
+            {
+                await Fall(true);
+                return;
+            }
         }
     }
 
@@ -87,13 +85,15 @@ public class Dragon : MonoBehaviour
             if (Vector3.Distance(_player.transform.position, transform.position) < 7)
             {
                 animator.SetBool("Fire", true);
+                await Awaitable.WaitForSecondsAsync(1.5f);
             }
-
-            // if (Random.Range(0, 100) > 95)
-            // {
-            //     animator.SetBool("Ground", false);
-            //     return;
-            // }
+            else if (Random.Range(0f, 1f) < 0.1 * Time.deltaTime)
+            {
+                animator.SetBool("Ground", false);
+                navMeshAgent.enabled = false;
+                body.isKinematic = false;
+                return;
+            }
 
             await Awaitable.NextFrameAsync();
         }
@@ -152,7 +152,6 @@ public class Dragon : MonoBehaviour
 
             if (getShot)
             {
-                Debug.Log("Get shot");
                 getShot = false;
                 if (canBeShot)
                     return true;
