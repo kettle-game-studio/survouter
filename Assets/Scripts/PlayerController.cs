@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviour
 
     public void CameraShake(float time = 1f)
     {
-        _shakeTime = time;
+        _shakeTime = Mathf.Max(_shakeTime, time);
     }
 
     public void GetHit(Transform hitter, float damage)

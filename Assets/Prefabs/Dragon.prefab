@@ -570,9 +570,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dragon
   arena: {fileID: 0}
   navMeshAgent: {fileID: 7095716929647291017}
+  body: {fileID: 375561232000512274}
   animator: {fileID: 2062502484733546531}
+  _player: {fileID: 0}
   startFlexing: 0
-  getShot: 0
+  getShot: 1
 --- !u!195 &7095716929647291017
 NavMeshAgent:
   m_ObjectHideFlags: 0
