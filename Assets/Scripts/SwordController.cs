@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class SwordController : MonoBehaviour
 {
+    public float SwordDamage = 20f;
     public Transform sword;
+    public CapsuleCollider swordCollider;
     public Transform swordMountPoint;
 
     public float prepareTime = 0.2f;
@@ -26,6 +28,8 @@ public class SwordController : MonoBehaviour
 
     void Start()
     {
+        swordCollider = sword.GetComponent<CapsuleCollider>();
+        swordCollider.enabled = false;
         sword.parent = transform.parent;
     }
 
@@ -78,6 +82,7 @@ public class SwordController : MonoBehaviour
         startRotation = sword.rotation;
 
         trail.emitting = true;
+        swordCollider.enabled = true;
         while (Time.time < startTime + swingTime)
         {
             var passedTime = Time.time - startTime;
@@ -88,6 +93,7 @@ public class SwordController : MonoBehaviour
             yield return null;
         }
         trail.emitting = false;
+        swordCollider.enabled = false;
 
         startTime = Time.time;
         startPosition = sword.position;

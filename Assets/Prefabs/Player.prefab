@@ -550,6 +550,8 @@ GameObject:
   - component: {fileID: 5974654737172508821}
   - component: {fileID: 682058860489252547}
   - component: {fileID: 38855344712055798}
+  - component: {fileID: 698585519640732999}
+  - component: {fileID: 3459325124570913173}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -630,6 +632,42 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &698585519640732999
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4609758019402065648}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.23861164
+  m_Height: 0.95799565
+  m_Direction: 2
+  m_Center: {x: -0.000017080149, y: 0.003212812, z: 0.5068251}
+--- !u!114 &3459325124570913173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4609758019402065648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0b591f19c5b82cf8ef89e09c196155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Sword
+  swordController: {fileID: 2135482159490992893}
 --- !u!1 &6077814699852819784
 GameObject:
   m_ObjectHideFlags: 0
@@ -974,6 +1012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c029373ab8fab4c28593b3bad13ef45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwordController
+  SwordDamage: 20
   sword: {fileID: 5974654737172508821}
   swordMountPoint: {fileID: 8378444593452796786}
   prepareTime: 0.2
