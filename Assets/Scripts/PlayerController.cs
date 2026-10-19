@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip jump;
     public AudioSource walkSource;
     public AudioSource jumpSource;
+    public SwordController sword;
 
     InputAction lookAction;
     InputAction moveAction;
@@ -63,8 +64,18 @@ public class PlayerController : MonoBehaviour
         playerCamera.transform.localRotation = Quaternion.AngleAxis(verticalLookAngle, Vector3.left);
         transform.rotation = Quaternion.AngleAxis(lookValue.x, Vector3.up) * transform.rotation;
 
-        bool attackButton = attackAction.WasPressedThisFrame();
+        bool attackButton = attackAction.IsPressed();
         bool interactButton = interactAction.WasPressedThisFrame();
+
+        // var delta = swordMountPoint.position - sword.position;
+        // if (Mathf.Abs(delta.magnitude) > 0.0001)
+        // {
+        //     var speed = (delta.magnitude > 0.5f * Time.deltaTime) ?
+        //         delta.magnitude * 0.9f :
+        //         Mathf.Min(delta.magnitude, 0.5f * Time.deltaTime);
+
+        //     sword.position += delta.normalized * speed;
+        // }
 
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out var hitInfo, maxInteractDistance))
         {
@@ -82,7 +93,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (attackButton)
         {
-            // Attack
+            sword.Hit();
         }
     }
 
