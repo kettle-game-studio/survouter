@@ -11,6 +11,8 @@ public class SwordController : MonoBehaviour
     public ParticleSystem gunParticles;
     public CapsuleCollider swordCollider;
     public Transform swordMountPoint;
+    public Bullet bullet;
+    public Transform bulletSpawn;
 
     public float prepareTime = 0.2f;
     public float swingTime = 0.2f;
@@ -68,6 +70,10 @@ public class SwordController : MonoBehaviour
     IEnumerator ShootCoroutine()
     {
         gunParticles.Play();
+        var spawnedBullet = Instantiate(bullet);
+        spawnedBullet.transform.position = bulletSpawn.position;
+        spawnedBullet.transform.rotation = bulletSpawn.rotation;
+
         _playerController.CameraShake(0.2f);
 
         var gunRollTime = 0.3f;

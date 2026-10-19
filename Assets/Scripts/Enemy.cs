@@ -97,9 +97,9 @@ public class Enemy : MonoBehaviour
                     animator.SetBool("Aim", true);
                     if (fireTimer <= 0)
                     {
-                        Instantiate(bullet);
-                        bullet.transform.position = bulletSpawnTransform.position;
-                        bullet.transform.rotation = bulletSpawnTransform.rotation;
+                        var spawnedBulled = Instantiate(bullet);
+                        spawnedBulled.transform.position = bulletSpawnTransform.position;
+                        spawnedBulled.transform.rotation = bulletSpawnTransform.rotation;
                         animator.SetBool("Fire", true);
                         gunParticles.Play();
                         fireTimer = firePeriod;
