@@ -88,12 +88,12 @@ public class Dragon : MonoBehaviour
             if (Random.Range(0, 10) > 6)
             {
                 animator.SetBool("Fire", true);
-                await Awaitable.WaitForSecondsAsync(0.5f);
+                await Awaitable.WaitForSecondsAsync(0.7f);
                 if (health <= 0) return;
                 var spawnedBullet = Instantiate(fireBullet);
                 spawnedBullet.transform.position = bulletSpawnPoint.position;
-                spawnedBullet.transform.rotation = bulletSpawnPoint.rotation;
-                await Awaitable.WaitForSecondsAsync(1.0f);
+                spawnedBullet.transform.rotation = Quaternion.LookRotation(_player.transform.position - bulletSpawnPoint.position);
+                await Awaitable.WaitForSecondsAsync(0.8f);
                 if (health <= 0) return;
             }
             else if (Random.Range(0, 10) > 7)
