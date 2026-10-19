@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7421741254094555694
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8957961883230345804}
+  m_Layer: 10
+  m_Name: BulletSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8957961883230345804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7421741254094555694}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.034844015, y: -9.094948e-13, z: 0.00000006646048, w: 0.9993928}
+  m_LocalPosition: {x: 0, y: 0.0232, z: 0.0035}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6253614313966870046}
+  m_LocalEulerAnglesHint: {x: 3.994, y: 0, z: 0}
 --- !u!1001 &5617658605548858802
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -278,7 +309,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1962623484264510380, guid: 5c1e3082a7091bb418acdc7bfb8ea539, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8957961883230345804}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5c1e3082a7091bb418acdc7bfb8ea539, type: 3}
       insertIndex: -1
@@ -573,6 +607,8 @@ MonoBehaviour:
   body: {fileID: 375561232000512274}
   animator: {fileID: 2062502484733546531}
   _player: {fileID: 0}
+  fireBullet: {fileID: 493621340622383106, guid: 64a6d9fe10993f142b2e4e777e59b626, type: 3}
+  bulletSpawnPoint: {fileID: 8957961883230345804}
   startFlexing: 0
   getShot: 1
 --- !u!195 &7095716929647291017
@@ -703,6 +739,11 @@ CapsuleCollider:
   m_Height: 0.023627048
   m_Direction: 1
   m_Center: {x: -2.6749694e-10, y: 0.006813523, z: 0.0005915092}
+--- !u!4 &6253614313966870046 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1962623484264510380, guid: 5c1e3082a7091bb418acdc7bfb8ea539, type: 3}
+  m_PrefabInstance: {fileID: 5617658605548858802}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6308733448784624198 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1907539533751736308, guid: 5c1e3082a7091bb418acdc7bfb8ea539, type: 3}

@@ -9,6 +9,8 @@ public class Dragon : MonoBehaviour
     public Rigidbody body;
     public Animator animator;
     public PlayerController _player;
+    public Bullet fireBullet;
+    public Transform bulletSpawnPoint;
 
     public bool startFlexing;
     public bool getShot;
@@ -59,7 +61,12 @@ public class Dragon : MonoBehaviour
             if (Random.Range(0, 10) > 6)
             {
                 animator.SetBool("Fire", true);
+                await Awaitable.WaitForSecondsAsync(0.2f);
+                var spawnedBullet = Instantiate(fireBullet);
+                spawnedBullet.transform.position = bulletSpawnPoint.position;
+                spawnedBullet.transform.rotation = bulletSpawnPoint.rotation;
             }
+
             // else if (Random.Range(0, 10) > 7)
             // {
             //     await Fall(true);
