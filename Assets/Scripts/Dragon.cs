@@ -93,6 +93,8 @@ public class Dragon : MonoBehaviour
             //     animator.SetBool("Ground", false);
             //     return;
             // }
+
+            await Awaitable.NextFrameAsync();
         }
     }
 
