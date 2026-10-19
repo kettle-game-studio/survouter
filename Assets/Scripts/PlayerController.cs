@@ -1,8 +1,5 @@
-using System;
+
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +7,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public InputActionAsset actions;
-    public Camera playerCamera;
+    public Transform cameraPivot;
+    public Transform playerCamera;
     public float mouseSpeed = 1;
     public Vector2 lookLimits = new Vector2(-60, 60);
     public float walkSpeed = 2;
@@ -37,6 +35,7 @@ public class PlayerController : MonoBehaviour
     bool canJump;
     float JumpVelocity => Mathf.Sqrt(2 * Physics.gravity.magnitude * jumpHeight);
     InputActionMap playerInputMap;
+    private float _shakeTime = 0f;
 
     void Start()
     {
@@ -58,10 +57,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        _shakeTime = Mathf.Max(_shakeTime - Time.deltaTime, 0);
+        if (_shakeTime > 0)
+        {
+            playerCamera.localPosition = new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)) * 0.2f;
+        }
+        else
+        {
+            playerCamera.localPosition = Vector3.zero;
+        }
+
         Vector2 lookValue = lookAction.ReadValue<Vector2>();
         lookValue = lookValue * mouseSpeed;
         verticalLookAngle = Mathf.Clamp(verticalLookAngle + lookValue.y, lookLimits.x, lookLimits.y);
-        playerCamera.transform.localRotation = Quaternion.AngleAxis(verticalLookAngle, Vector3.left);
+        cameraPivot.transform.localRotation = Quaternion.AngleAxis(verticalLookAngle, Vector3.left);
         transform.rotation = Quaternion.AngleAxis(lookValue.x, Vector3.up) * transform.rotation;
 
         bool attackButton = attackAction.IsPressed();
@@ -77,7 +86,7 @@ public class PlayerController : MonoBehaviour
         //     sword.position += delta.normalized * speed;
         // }
 
-        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out var hitInfo, maxInteractDistance))
+        if (Physics.Raycast(cameraPivot.transform.position, cameraPivot.transform.forward, out var hitInfo, maxInteractDistance))
         {
             // Interactinator
             // interactinator = hitInfo.collider.GetComponentInParent<Interactinator>();
@@ -89,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
         if (interactButton)
         {
-            // Interact
+            sword.Shoot();
         }
         else if (attackButton)
         {
@@ -158,6 +167,11 @@ public class PlayerController : MonoBehaviour
         attackAction.Enable();
         interactAction.Enable();
         playerInputMap.Enable();
+    }
+
+    public void CameraShake(float time = 1f)
+    {
+        _shakeTime = time;
     }
 }
 

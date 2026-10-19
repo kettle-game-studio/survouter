@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class SwordController : MonoBehaviour
 {
+    public PlayerController _playerController;
+
     public float SwordDamage = 20f;
     public Transform sword;
+    public Transform gun;
+    public ParticleSystem gunParticles;
     public CapsuleCollider swordCollider;
     public Transform swordMountPoint;
 
@@ -53,6 +57,40 @@ public class SwordController : MonoBehaviour
             _attackBuffer = true;
         else
             StartCoroutine(HitCoroutine(0));
+    }
+
+
+    public void Shoot()
+    {
+        StartCoroutine(ShootCoroutine());
+    }
+
+    IEnumerator ShootCoroutine()
+    {
+        gunParticles.Play();
+        _playerController.CameraShake(0.2f);
+
+        var gunRollTime = 0.3f;
+        var startTime = Time.time;
+
+        while (Time.time < startTime + gunRollTime)
+        {
+            var delta = (Time.time - startTime) / gunRollTime;
+            gun.transform.localEulerAngles = new Vector3(-delta * (360 + 30), 0, -90);
+            yield return null;
+        }
+
+        var gunBackTime = 0.3f;
+        startTime = Time.time;
+
+        while (Time.time < startTime + gunBackTime)
+        {
+            var delta = (Time.time - startTime) / gunBackTime;
+            gun.transform.localEulerAngles = new Vector3(Mathf.Lerp(-30, 0, delta), 0, -90);
+            yield return null;
+        }
+
+        yield return null;
     }
 
     IEnumerator HitCoroutine(int hitNumber)
