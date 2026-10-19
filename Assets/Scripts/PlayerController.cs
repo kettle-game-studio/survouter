@@ -173,5 +173,10 @@ public class PlayerController : MonoBehaviour
     {
         _shakeTime = time;
     }
+
+    public void Hit()
+    {
+        Debug.Log("Hit player!!!");
+    }
 }
 

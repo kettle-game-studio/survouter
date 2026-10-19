@@ -13,10 +13,15 @@ public class Enemy : MonoBehaviour
     public float startHealth = 50f;
     public Rigidbody body;
     public bool isArcher;
+    float firePeriod = 2;
+    public ParticleSystem gunParticles;
+    public Bullet bullet;
+    public Transform bulletSpawnTransform;
 
     public float immortalityCooldown = 0f;
 
     public Animator animator;
+    float fireTimer = 0;
 
     // Todo: fear mechanics ???
     enum States
@@ -67,6 +72,9 @@ public class Enemy : MonoBehaviour
 
     void ArcherBrain()
     {
+        if (fireTimer > 0)
+            fireTimer -= Time.deltaTime;
+
         var dist = Vector3.Distance(transform.position, _player.transform.position);
         switch (_state)
         {
@@ -86,7 +94,16 @@ public class Enemy : MonoBehaviour
                     var look = _player.transform.position - transform.position;
                     look = new Vector3(look.x, 0, look.z);
                     transform.rotation = Quaternion.LookRotation(look);
-                    animator.SetBool("Fire", true);
+                    animator.SetBool("Aim", true);
+                    if (fireTimer <= 0)
+                    {
+                        Instantiate(bullet);
+                        bullet.transform.position = bulletSpawnTransform.position;
+                        bullet.transform.rotation = bulletSpawnTransform.rotation;
+                        animator.SetBool("Fire", true);
+                        gunParticles.Play();
+                        fireTimer = firePeriod;
+                    }
                 }
 
                 break;
