@@ -1,6 +1,8 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Dragon : MonoBehaviour
 {
@@ -12,17 +14,39 @@ public class Dragon : MonoBehaviour
     public Bullet fireBullet;
     public Transform bulletSpawnPoint;
 
+    public RawImage healthBar;
+
     public bool getShot;
+
+    public float health;
+    private bool dead = false;
+    public float maxHeath = 500;
 
     async void Start()
     {
         _player = arena.GetPlayer();
+        health = maxHeath;
         await DragonCoroutine();
     }
 
     void Update()
     {
         animator.SetFloat("WalkSpeed", navMeshAgent.velocity.magnitude);
+        healthBar.rectTransform.sizeDelta = new Vector2(500 * health / maxHeath, 15);
+
+        if (health <= 0 && !dead)
+        {
+            dead = true;
+            StartCoroutine(Die());
+        }
+    }
+
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(0.1f);
+        animator.SetBool("Grounded", false);
+        yield return new WaitForSeconds(0.1f);
+        animator.SetBool("Dead", true);
     }
 
     async Awaitable DragonCoroutine()
@@ -31,7 +55,9 @@ public class Dragon : MonoBehaviour
         while (true)
         {
             await Flexing();
+            if (health <= 0) return;
             await Chepyking();
+            if (health <= 0) return;
         }
     }
 
@@ -49,6 +75,8 @@ public class Dragon : MonoBehaviour
     {
         while (true)
         {
+            if (health <= 0) return;
+
             var wasShot = await FlyTo(arena.NextFlyingSpot(), 15f, true);
             if (wasShot)
             {
@@ -61,10 +89,12 @@ public class Dragon : MonoBehaviour
             {
                 animator.SetBool("Fire", true);
                 await Awaitable.WaitForSecondsAsync(0.5f);
+                if (health <= 0) return;
                 var spawnedBullet = Instantiate(fireBullet);
                 spawnedBullet.transform.position = bulletSpawnPoint.position;
                 spawnedBullet.transform.rotation = bulletSpawnPoint.rotation;
                 await Awaitable.WaitForSecondsAsync(1.0f);
+                if (health <= 0) return;
             }
             else if (Random.Range(0, 10) > 7)
             {
@@ -81,11 +111,14 @@ public class Dragon : MonoBehaviour
 
         while (true)
         {
+            if (health <= 0) return;
+
             navMeshAgent.destination = _player.transform.position;
             if (Vector3.Distance(_player.transform.position, transform.position) < 7)
             {
                 animator.SetBool("Fire", true);
                 await Awaitable.WaitForSecondsAsync(1.5f);
+                if (health <= 0) return;
             }
             else if (Random.Range(0f, 1f) < 0.1 * Time.deltaTime)
             {
@@ -96,6 +129,7 @@ public class Dragon : MonoBehaviour
             }
 
             await Awaitable.NextFrameAsync();
+            if (health <= 0) return;
         }
     }
 
@@ -121,10 +155,14 @@ public class Dragon : MonoBehaviour
                 transform.position = Vector3.Lerp(startPosition, point, delta);
 
                 await Awaitable.NextFrameAsync();
+                if (health <= 0) return;
             }
 
             if (!gracefully)
+            {
                 await Awaitable.WaitForSecondsAsync(2f);
+                if (health <= 0) return;
+            }
 
             animator.SetBool("Ground", true);
             animator.SetBool("Fall", false);
@@ -149,6 +187,7 @@ public class Dragon : MonoBehaviour
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Pow(delta, 0.7f));
 
             await Awaitable.NextFrameAsync();
+            if (health <= 0) return true;
 
             if (getShot)
             {

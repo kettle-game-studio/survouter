@@ -34,6 +34,7 @@ public class Bullet : MonoBehaviour
         if (collision.body?.TryGetComponent(out Dragon dragon) ?? false)
         {
             dragon.getShot = true;
+            dragon.health -= damage;
         }
     }
 }
