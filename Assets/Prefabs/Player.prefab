@@ -5921,7 +5921,7 @@ MonoBehaviour:
   gunParticles: {fileID: 2808230343057043778}
   swordCollider: {fileID: 698585519640732999}
   swordMountPoint: {fileID: 8378444593452796786}
-  bullet: {fileID: 493621340622383106, guid: b1605aa3f79021e49a6d3cf6b3fe6207, type: 3}
+  bullet: {fileID: 493621340622383106, guid: 2e26cffbadbca014fab0ed405f4c8e20, type: 3}
   bulletSpawn: {fileID: 8983971446224392922}
   prepareTime: 0.2
   swingTime: 0.4
