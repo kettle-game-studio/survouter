@@ -10,5 +10,11 @@ public class Sword : MonoBehaviour
         {
             enemy.GetHit(swordController.transform, swordController.SwordDamage);
         }
+
+        if (other.attachedRigidbody.TryGetComponent<Dragon>(out var dragon))
+        {
+            dragon.startFlexing = true;
+            // enemy.GetHit(swordController.transform, swordController.SwordDamage);
+        }
     }
 }

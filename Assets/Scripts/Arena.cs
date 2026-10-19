@@ -4,6 +4,8 @@ using UnityEngine.AI;
 public class Arena : MonoBehaviour
 {
     private PlayerController _player;
+    public Transform[] FlyingSpots;
+    private int spotIdx = 0;
 
     public PlayerController GetPlayer()
     {
@@ -13,8 +15,10 @@ public class Arena : MonoBehaviour
         return _player;
     }
 
-    public void HowToGetTo()
+    public Transform NextFlyingSpot()
     {
-        
+        var spot = FlyingSpots[spotIdx];
+        spotIdx = (spotIdx + 1) % FlyingSpots.Length;
+        return spot;
     }
 }
